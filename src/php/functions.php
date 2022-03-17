@@ -1,7 +1,7 @@
 <?php
-function error($message){
-    echo $message;
-    return null;
+function error($reason, $message="Internal error."){
+    header("Location: ./failed.php?m=".$message);
+    exit;
 }
 function createContext($method, $header, $content){
     $content = http_build_query($content);
@@ -61,7 +61,6 @@ function initPayment(
             'channelName' => $channelName,
             'clientReference' => $clientReference
         );
-        // echo json_encode($content);
         $header = "accessToken:".$accessToken;
         $context = createContext("POST", $header, $content);
         try {
@@ -70,4 +69,46 @@ function initPayment(
             return false;
         }
     }
+function addNewTransaction(
+    $sqlInfo,
+    $transaction_id,
+    $full_name,
+    $mt4_account,
+    $amount,
+    $email,
+    $country,
+    $currency
+){
+    try {
+        $conn = new mysqli(
+            $sqlInfo["serverName"],
+            $sqlInfo["username"],
+            $sqlInfo["password"],
+            $sqlInfo["database"]
+        );
+        if ($conn->connect_error) {
+            return FALSE;
+        }
+    } catch (\Throwable $th) {
+        return $th;
+    }
+    $sql = "INSERT INTO "
+    .$sqlInfo["table"]
+    ." (transaction_id,full_name,mt4_account,amount,email,country,currency) VALUES ('"
+    .$transaction_id."','"
+    .$full_name."','"
+    .$mt4_account."','"
+    .$amount."','"
+    .$email."','"
+    .$country."','"
+    .$currency."')";
+    try {
+        $result = $conn->query($sql);
+        return $result === TRUE? TRUE :FALSE;
+    } catch (\Throwable $th) {
+        return $th;
+    } finally{
+        $conn->close();
+    }
+}
 ?>

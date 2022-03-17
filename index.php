@@ -12,7 +12,7 @@
 <body>
     <main>
         <h3 class="ms-3 mb-3">Fund Deposit</h3>
-        <form class="main-form needs-validation" method="POST" action="./init-payment.php" novalidate autocomplete="on">
+        <form class="main-form needs-validation" method="POST" action="./payment.php" novalidate autocomplete="on">
             <section class="horizontal-con">
                 <div class="mb-3 each-input">
                     <label for="full-name" class="form-label">Full Name</label>
