@@ -1,0 +1,37 @@
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+main {
+  max-width: 900px;
+  padding: 15px;
+  margin: 20px;
+  border-radius: 5px;
+  background-color: rgb(230, 230, 230);
+}
+form {
+  padding: 15px;
+}
+.horizontal-con {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  column-gap: 100px;
+}
+.horizontal-con:last-child{
+  justify-content: center;
+}
+.select{
+  width:270px;
+}
+.submit{
+    width: 200px;
+}
+@media screen and (max-width: 755px) {
+  .each-input, .dropdown-toggle {
+    width: 100%;
+  }
+}
