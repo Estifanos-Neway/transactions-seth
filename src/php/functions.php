@@ -69,6 +69,19 @@ function initPayment(
             return false;
         }
     }
+function getConnection($sqlInfo){
+    $conn = new mysqli(
+            $sqlInfo["serverName"],
+            $sqlInfo["username"],
+            $sqlInfo["password"],
+            $sqlInfo["database"]
+        );
+        if ($conn->connect_error) {
+            return FALSE;
+        } else {
+            return $conn;
+        }
+}
 function addNewTransaction(
     $sqlInfo,
     $transaction_id,
@@ -80,13 +93,8 @@ function addNewTransaction(
     $currency
 ){
     try {
-        $conn = new mysqli(
-            $sqlInfo["serverName"],
-            $sqlInfo["username"],
-            $sqlInfo["password"],
-            $sqlInfo["database"]
-        );
-        if ($conn->connect_error) {
+        $conn = getConnection($sqlInfo);
+        if (!$conn) {
             return FALSE;
         }
     } catch (\Throwable $th) {
@@ -110,5 +118,20 @@ function addNewTransaction(
     } finally{
         $conn->close();
     }
+}
+function getTransactions($sqlInfo,$condition=NULL){
+    $conn = getConnection($sqlInfo);
+    if (!$conn) {
+        return FALSE;
+    }
+    $sql = "SELECT * FROM ".$sqlInfo["table"]." where ".strtolower($condition);
+    $result = $conn->query($sql);
+
+    $result_array = [];
+    while($row = $result->fetch_assoc()) {
+        $result_array[] = $row;
+    }
+    $conn->close();
+    return $result_array;
 }
 ?>

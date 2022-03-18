@@ -1,0 +1,18 @@
+body{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 60px;
+  }
+  .search{
+    display:flex;
+    column-gap: 30px;
+  }
+  table{
+    border-collapse: collapse;
+  }
+  td, th {
+    padding:10px;
+    text-align: center;
+    border:1px solid rgb(230, 230, 230);
+  }
