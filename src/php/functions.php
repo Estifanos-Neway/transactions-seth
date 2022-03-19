@@ -1,6 +1,17 @@
 <?php
-function error($reason, $message="Internal error."){
-    header("Location: ./failed.php?m=".$message);
+function error($reason, $message="Internal error.",$retryPath = "/"){
+    echo
+    '<div class="card">
+    <div class="card-body">
+        <h5 class="card-title text-danger">Request failed!</h5>
+        <p class="card-text">
+            Sorry, your request is not served.
+            <br>
+            Reason: '.$message.'
+        </p>
+        <button onclick="history.back()" class="btn btn-secondary btn-sm ps-3 pe-3">< Retry</button>
+    </div>
+</div>';
     exit;
 }
 function createContext($method, $header, $content){
@@ -124,14 +135,71 @@ function getTransactions($sqlInfo,$condition=NULL){
     if (!$conn) {
         return FALSE;
     }
-    $sql = "SELECT * FROM ".$sqlInfo["table"]." where ".strtolower($condition);
+    if($condition) {
+        if (strpos($condition,">=") !== false){
+            $comparator = ">=";
+        } elseif(strpos($condition,"<=") !== false){
+            $comparator = "<=";
+        } elseif(strpos($condition,">") !== false){
+            $comparator = ">";
+        } elseif(strpos($condition,"<") !== false){
+            $comparator = "<";
+        } elseif(strpos($condition,"=") !== false){
+            $comparator = "=";
+        }
+        if($comparator){
+            $condition = str_replace($comparator,$comparator."'",$condition)."'";
+        } else {
+            $condition = "CONCAT(
+                id, '',
+                time, '' ,
+                transaction_id, '', 
+                full_name, '', 
+                mt4_account, '', 
+                amount, '',
+                email, '',
+                country, '',
+                currency, '',
+                success
+                ) LIKE '%".$condition."%'";
+        }
+    }
+    $sql = "SELECT * FROM ".$sqlInfo["table"].($condition?(" where ".strtolower($condition)):"");
     $result = $conn->query($sql);
-
     $result_array = [];
     while($row = $result->fetch_assoc()) {
         $result_array[] = $row;
     }
     $conn->close();
     return $result_array;
+}
+
+function updateSuccess($sqlInfo,$transaction_id,$success){
+    try {
+        $conn = getConnection($sqlInfo);
+        if (!$conn) {
+            return FALSE;
+        }
+    } catch (\Throwable $th) {
+        return $th;
+    }
+    $sql = "UPDATE "
+    .$sqlInfo["table"]
+    ." SET success=".$success
+    ." WHERE transaction_id='".$transaction_id."'";
+    try {
+        $result = $conn->query($sql);
+        return $result === TRUE? TRUE :FALSE;
+    } catch (\Throwable $th) {
+        return $th;
+    } finally{
+        $conn->close();
+    }
+}
+function hashPassword($password){
+    return hash(
+        "sha256",
+        $password
+    );
 }
 ?>

@@ -8,7 +8,8 @@ function validator() {
                     event.preventDefault()
                     event.stopPropagation()
                 } else {
-                    console.log("valid")
+                    // @ts-ignore
+                    document.getElementById("pay-now").disabled = true;
                 }
                 form.classList.add('was-validated')
             }, false)

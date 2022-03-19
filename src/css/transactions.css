@@ -1,18 +1,27 @@
 body{
     display:flex;
-    flex-direction: column;
+    align-items: center;
     justify-content: center;
+    flex-direction: column;
     padding: 60px;
+  }
+  .password-form{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  input, input::placeholder{
+    text-align:center;
   }
   .search{
     display:flex;
     column-gap: 30px;
   }
-  table{
-    border-collapse: collapse;
+  .transactions-count{
+    align-self: flex-start;
+    color:#6c757d;
   }
   td, th {
-    padding:10px;
     text-align: center;
-    border:1px solid rgb(230, 230, 230);
   }

@@ -3,7 +3,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  padding: 60px;
 }
 main {
   max-width: 900px;
@@ -29,6 +29,7 @@ form {
 }
 .submit{
     width: 200px;
+    /* background-color: rgb(184, 184, 184); */
 }
 @media screen and (max-width: 755px) {
   .each-input, .dropdown-toggle {

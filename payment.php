@@ -1,4 +1,19 @@
-<?php
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="./src/css/index.css">
+</head>
+
+<body>
+    <?php
+error_reporting(E_ERROR | E_PARSE);
 // importing modules
 require "./config.php";
 require "./src/php/functions.php";
@@ -12,29 +27,29 @@ $amount = $_POST["amount"];
 $currency = $_POST["currency"];
 if(!($fullName && $email && $mt4 && $country && $amount && $currency)){
     // if one of the variables are missing
-    error("Missing some of the variables.","Missing some required form fields.");
+    error("Missing some of the variables.","Missing some required form fields.","./");
 } else{
     // getting authorized to the VaultsPay api
     $authUrl = $baseUrl.$getAuthPath;
     $authResult = getAuth($authUrl,$clientId, $clientSecret);
     $authResult = json_decode($authResult,true);
     if(!($authResult && $authResult["message"] == "Successful.")){
-        error("Can't auth.");
+        error("Can't auth.","Internal error (1)","./");
     } else{
         $accessToken =  $authResult["data"]["access_token"];
         if(!$accessToken){
-            error("Can't auth(2).");
+            error("Can't auth(2).","Internal error (2)","./");
         } else{
            // getting allowed payment methods
            $paymentMethodUrl = $baseUrl.$allowedPaymentMethodsPath;
            $paymentMethodResult = getPaymentMethod($paymentMethodUrl, $accessToken, $currency, $channelName);
            $paymentMethodResult = json_decode($paymentMethodResult,true);
            if(!($paymentMethodResult && $paymentMethodResult["message"] == "Successful.")){
-            error("Can't get payment methods.");
+            error("Can't get payment methods.","Internal error (3)","./");
         } else{
             $schemaCode = $paymentMethodResult["data"][0]["code"];
             if(!$schemaCode){
-                error("Currency not supported.","Currency not supported.");
+                error("Currency not supported.","Currency not supported.","./");
             } else{
                 // initiating payment
                 $initPaymentUrl = $baseUrl.$initPaymentPath;
@@ -46,7 +61,7 @@ if(!($fullName && $email && $mt4 && $country && $amount && $currency)){
                     $accessToken,
                     $schemaCode,
                     $amount,
-                    $callBackUrl,
+                    $callbackUrl,
                     $redirectUrl,
                     $expiryInSeconds,
                     $channelName,
@@ -54,12 +69,12 @@ if(!($fullName && $email && $mt4 && $country && $amount && $currency)){
                 );
                 $initPaymentResult = json_decode($initPaymentResult,true);
                 if(!($initPaymentResult && $initPaymentResult["message"] == "Successful.")){
-                    error("Can't init payment.");
+                    error("Can't init payment.","Internal error (4)","./");
                 } else{
                     $paymentUrl = $initPaymentResult["data"]["paymentUrl"];
                     $paymentId = $initPaymentResult["data"]["paymentId"];
                     if(!($paymentUrl && $paymentId)){
-                        error("Can't init payment(2).");
+                        error("Can't init payment(2).","Internal error (5)","./");
                     } else{
                         $transaction_id = $paymentId;
                         $full_name = $fullName;
@@ -74,11 +89,14 @@ if(!($fullName && $email && $mt4 && $country && $amount && $currency)){
                             $country,
                             $currency
                         );
-                        echo $addNewTransactionResult;
                         if($addNewTransactionResult !== TRUE){
-                            error("transaction not saved.");
+                            error("transaction not saved.","Internal error (6)","./");
                         } else{
-                            header("Location: ".$paymentUrl);
+                            echo "
+                            <script>
+                            window.location.href = '".$paymentUrl."';
+                            </script>
+                            ";
                             exit;
                         }
                     }
@@ -89,3 +107,9 @@ if(!($fullName && $email && $mt4 && $country && $amount && $currency)){
     }
 }
 ?>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
+    </script>
+    <!--
+</body>
+</html>
