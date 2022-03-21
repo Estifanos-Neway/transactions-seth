@@ -1,7 +1,16 @@
 <?php
 function error($reason, $message="Internal error.",$retryPath = "/"){
     echo
-    '<div class="card">
+    '
+    <style>
+    body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 60px 10px;
+      }
+    </style>
+    <div class="card">
     <div class="card-body">
         <h5 class="card-title text-danger">Request failed!</h5>
         <p class="card-text">

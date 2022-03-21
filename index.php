@@ -1,39 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fund Deposit</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="./src/css/index.css">
 </head>
+
 <body>
-    <main>
-        <h3 class="ms-3 mb-3">Fund Deposit</h3>
-        <form class="main-form needs-validation" method="POST" action="./payment.php" novalidate autocomplete="on">
-            <section class="horizontal-con">
-                <div class="mb-3 each-input">
-                    <label for="full-name" class="form-label">Full Name</label>
-                    <input type="text" name="full_name" class="form-control" id="full-name"
-                        placeholder="Your full name here" required>
+    <div id="payment-wrap">
+        <div class="payment-image">
+            <nav class="payment-image-nav">
+                <ul>
+                    <li><a class="logo" href="#">one<span class="text-primary-color">fold.</span></a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Our Products</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </nav>
+            <div class="payment-image-text">
+                <h2 class="display-lg text-white">Money.</h2>
+                <h2 class="display-lg text-primary-color">Guaranteed.</h2>
+            </div>
+            <nav class="payment-image-footer">
+                <ul>
+                    <li>
+                        <a href="#">
+                            <span class="text-white">Sales: </span><span class="text-primary-color">888-877-9876</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="text-white">Sales: </span><span class="text-primary-color">888-877-9876</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="payment-card">
+            <div class="payment-card-header">
+                <h1 class="display-md"><span class="text-main">one</span><span class="text-primary-color">fold.</span></h1>
+                <p class="text-muted">Welcome to our online backing management system! Log in below to access your
+                    account.</p>
+            </div>
+            <form class="payment-card-form" id="payment-card-form" method="POST" action="./payment.php">
+                <div class="input-group">
+                    <input class="required" type="text" name="full_name" placeholder="Full name">
                 </div>
-                <div class="mb-3 each-input">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" name="email" class="form-control" id="email" placeholder="Your email here" required>
+                <div class="input-group">
+                    <input class="required" type="text" name="email" placeholder="Email">
                 </div>
-            </section>
-            <section class="horizontal-con">
-                <div class="mb-3 each-input">
-                    <label for="mt4" class="form-label">MT4 Account Number</label>
-                    <input type="number" name="mt4" class="form-control" id="mt4"
-                        placeholder="Your MT4 account number here" required>
+                <div class="input-group">
+                    <input class="required" type="number" name="mt4" placeholder="MT4 Account Number">
                 </div>
-                <div class="mb-3 each-input select">
-                    <label for="Country" class="form-label">Country</label>
-                    <select class="form-select bg-secondary text-light" name="country" required>
-                        <option selected disabled value="">Select your country</option>
+                <div class="input-group">
+                    <select class="form-select bg-secondary text-light required" name="country">
+                        <option selected disabled value="">Country</option>
                         <option value="Afghanistan">Afghanistan</option>
                         <option value="Albania">Albania</option>
                         <option value="Algeria">Algeria</option>
@@ -282,33 +308,25 @@
 
                     </select>
                 </div>
-            </section>
-            <section class="horizontal-con">
-                <div class="mb-3 each-input">
-                    <label for="amount" class="form-label">Amount</label>
-                    <input type="number" name="amount" class="form-control" id="amount" placeholder="The amount here" required>
+                <div class="input-group">
+                    <input class="required" type="number" name="amount" placeholder="Amount">
                 </div>
-                <div class="mb-3 each-input select">
-                    <label for="Currency" class="form-label">Currency</label>
-                    <select class="form-select bg-secondary text-light" name="currency" required>
-                        <option selected disabled value="">Select your currency</option>
+                <div class="input-group">
+                    <select class="form-select bg-secondary text-light required" name="currency">
+                        <option selected disabled value="">Currency</option>
                         <option value="USD">USD</option>
                         <option value="AED">AED</option>
                     </select>
                 </div>
-            </section>
-            <section class="horizontal-con">
-                <button type="submit" class="btn mt-4 btn-secondary submit" id="pay-now">
-                    PAY NOW
-                </button>
-            </section>
-        </form>
-    </main>
-    <script src="./src/js/validation.js"></script>
+                <div class="btn-group">
+                    <button type="submit" id="submit" value="Submit" class="button button-primary btn btn-primary btn-sm">Pay Now</button>
+                </div>
+            </form>
+            <div class="payment-card-footer">
+                <p class="text-muted">2019 Copyright &copy; Onefold, Incorporated.</p>
+            </div>
+        </div>
+    </div>
     <script src="./src/js/main.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
-    </script>
 </body>
-
 </html>

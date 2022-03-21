@@ -3,7 +3,7 @@ body{
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    padding: 60px;
+    padding: 40px 30px;
   }
   .password-form{
     display:flex;
@@ -21,6 +21,11 @@ body{
   .transactions-count{
     align-self: flex-start;
     color:#6c757d;
+  }
+  table{
+    border-radius: 3px;
+    background-color: #f3f3f3;
+    align-self: flex-start;
   }
   td, th {
     text-align: center;
